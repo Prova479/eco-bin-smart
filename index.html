@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>ECO BIN SMART</title><style>
+:root{--g:#1b5e20;--g2:#2e7d32;--gl:#e8f5e9;--bg:#f1f7f1;--c:#fff;--t:#17301a;--m:#5b6e5d;--bd:#d3e4d4;--in:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--g:#81c784;--g2:#388e3c;--gl:#1e3524;--bg:#0f1a11;--c:#182a1b;--t:#e6f2e7;--m:#9bb39d;--bd:#2a4430;--in:#0f1a11}}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--t);font:16px/1.45 system-ui,Segoe UI,Roboto,sans-serif}
+.app{max-width:760px;margin:auto;padding:0 12px 40px}
+header{background:linear-gradient(135deg,#1b5e20,#43a047);color:#fff;border-radius:0 0 22px 22px;padding:16px;margin:0 -12px 10px;text-align:center}
+.logo{font-weight:800;font-size:22px;letter-spacing:1px}.logo span{background:#fff;color:#1b5e20;border-radius:8px;padding:0 7px;margin-right:6px}
+header p{margin:4px 0 0;font-size:14px;opacity:.95}
+nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+nav button{flex:none;border:1px solid var(--bd);background:var(--c);color:var(--t);border-radius:20px;padding:9px 14px;font-size:14px;cursor:pointer}
+nav button.on{background:var(--g2);color:#fff;border-color:var(--g2)}
+.card{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:10px}
+h2{margin:6px 0 10px;font-size:19px;color:var(--g)}h3{margin:0 0 6px;font-size:16px;color:var(--g)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid .card{margin:0;text-align:center}
+.num{font-size:34px;font-weight:800;color:var(--g)}.lbl{font-size:13px;color:var(--m)}
+button.b{background:var(--g2);color:#fff;border:0;border-radius:12px;padding:12px 16px;font-size:15px;cursor:pointer;margin:3px 3px 3px 0}
+button.b.s{background:var(--gl);color:var(--g)}button.b.r{background:#c62828}button.b.sm{padding:8px 11px;font-size:13px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--in);color:var(--t);font:inherit;margin:3px 0 8px}
+label{font-size:13px;color:var(--m)}
+.bar{height:12px;background:var(--gl);border-radius:8px;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;border-radius:8px}
+.tag{display:inline-block;border-radius:10px;padding:2px 9px;font-size:12px;color:#fff}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.warn{background:#fff3e0;color:#e65100;border-radius:10px;padding:6px 10px;font-size:14px;margin:6px 0}
+.full{background:#ffebee;color:#b71c1c;border-radius:10px;padding:6px 10px;font-size:14px;font-weight:700;margin:6px 0}
+.map{position:relative;height:300px;border-radius:14px;border:1px solid var(--bd);overflow:hidden;background:linear-gradient(90deg,transparent 48%,#b0bec5 48%,#b0bec5 52%,transparent 52%),linear-gradient(0deg,transparent 58%,#b0bec5 58%,#b0bec5 62%,transparent 62%),var(--gl)}
+.dot{position:absolute;transform:translate(-50%,-50%);border:3px solid #fff;color:#fff;font-size:11px;font-weight:700;border-radius:50%;width:38px;height:38px;cursor:pointer;box-shadow:0 2px 6px #0004}
+.f{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.f button{border:1px solid var(--bd);background:var(--c);color:var(--t);border-radius:18px;padding:8px 14px;cursor:pointer}.f button.on{background:var(--g2);color:#fff}
+pre{background:#102014;color:#a5d6a7;padding:10px;border-radius:10px;overflow-x:auto;font-size:12px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#1b5e20;color:#fff;padding:11px 18px;border-radius:24px;display:none;z-index:9;max-width:90%;text-align:center}
+.demo{background:#fff8e1;color:#6d4c00;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:14px}
+ol,ul{padding-left:20px;margin:6px 0}
+</style></head><body><div class="app">
+<header><div class="logo"><span>♻</span>ECO BIN SMART</div><p>Таза қала – ортақ міндет!</p></header>
+<nav id="nav"></nav><div id="demo"></div><main id="v"></main></div><div id="toast"></div>
+<script>
+var KEY='ecobin_v1',TABS=[['home','Басты бет'],['bin','Smart Bin'],['mon','Мониторинг'],['map','Eco Map'],['rep','Хабарлама'],['stat','Статистика'],['tips','Көмекші'],['hw','Аппарат'],['prj','Жоба']];
+var tab='home',S,editId=null,showForm=false,filt='all',q='',sel=null,demoOn=false,demoT=null,demoI=0,store=true;
+function now(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return p(d.getDate())+'.'+p(d.getMonth()+1)+' '+p(d.getHours())+':'+p(d.getMinutes())}
+/* Болашақта нақты карта қосу үшін әр жәшікке lat, lng (координата) өрістерін қосып, Eco Map бөлімінде карта кітапханасына беруге болады. */
+function def(){var t=now();return{cleaned:0,bins:[
+{id:'B-101',loc:'Абай даңғылы, 12',lvl:25,t:t,x:18,y:25},{id:'B-102',loc:'Орталық саябақ',lvl:48,t:t,x:75,y:20},
+{id:'B-103',loc:'Мектеп №5 алды',lvl:76,t:t,x:30,y:75},{id:'B-104',loc:'Базар маңы',lvl:92,t:t,x:68,y:50},{id:'B-105',loc:'Бекет аялдамасы',lvl:100,t:t,x:85,y:82}],
+reps:[]}}
+function load(){try{var r=localStorage.getItem(KEY);S=r?JSON.parse(r):def()}catch(e){store=false;S=def()}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){store=false}}
+function esc(s){return String(s).replace(/[&<>\
